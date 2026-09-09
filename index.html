@@ -1,625 +1,298 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
-  <title>매장품질 9월 2주차 연출가이드</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>9월 2주차 연출가이드</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Swiper.js CSS (모바일 터치 슬라이더 & 핀치 줌) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <!-- 구글 Noto Sans KR 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --uplus:#e6007e;
-      --ink:#171717;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --bg:#f6f7f9;
-      --card:#ffffff;
-    }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
     body {
-      margin:0;
-      color:var(--ink);
-      background:var(--bg);
-      font-family:Pretendard,"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      -webkit-font-smoothing:antialiased;
+      font-family: 'Noto Sans KR', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
-    .top {
-      background:#fff;
-      border-bottom:1px solid var(--line);
+    /* 모바일 브라우저 주소창 고려 높이 */
+    .viewport-height {
+      height: 100dvh;
     }
-    .top-inner {
-      width:min(1180px,calc(100% - 32px));
-      margin:auto;
-      padding:30px 0 24px;
+    /* Swiper 핀치 줌 영역 스타일 */
+    .swiper-slide {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0f172a;
     }
-    .eyebrow {
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      margin-bottom:10px;
-      font-size:14px;
-      font-weight:800;
-      color:var(--uplus);
+    .swiper-zoom-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .eyebrow::before {
-      content:"";
-      width:9px;height:9px;border-radius:50%;
-      background:var(--uplus);
-      box-shadow:0 0 0 5px rgba(230,0,126,.10);
+    .swiper-zoom-container > img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      user-select: none;
     }
-    h1 {
-      margin:0;
-      font-size:clamp(27px,4.4vw,44px);
-      line-height:1.18;
-      letter-spacing:-1.5px;
+    /* 스크롤바 숨기기 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
     }
-    .desc {
-      margin:12px 0 0;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.7;
-    }
-    .notice {
-      margin-top:18px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding:12px 14px;
-      border-radius:12px;
-      background:#fff4fa;
-      color:#8b1259;
-      font-size:14px;
-      font-weight:700;
-    }
-    .notice strong {
-      flex:0 0 auto;
-      width:24px;height:24px;
-      border-radius:50%;
-      display:grid;place-items:center;
-      background:var(--uplus);color:#fff;
-    }
-
-    .quick-wrap {
-      position:sticky;
-      top:0;
-      z-index:20;
-      background:rgba(255,255,255,.94);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--line);
-    }
-    .quick {
-      width:min(1180px,calc(100% - 24px));
-      margin:auto;
-      padding:10px 0;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      overflow-x:auto;
-      scrollbar-width:none;
-    }
-    .quick::-webkit-scrollbar { display:none; }
-    .quick .label {
-      flex:0 0 auto;
-      font-size:13px;
-      font-weight:800;
-      color:#4b5563;
-      margin-right:2px;
-    }
-    .quick a {
-      flex:0 0 auto;
-      width:34px;height:34px;
-      display:grid;place-items:center;
-      text-decoration:none;
-      color:#373737;
-      background:#f4f4f5;
-      border:1px solid #e5e7eb;
-      border-radius:10px;
-      font-size:13px;
-      font-weight:800;
-    }
-    .quick a:hover,.quick a:focus {
-      color:#fff;
-      background:var(--uplus);
-      border-color:var(--uplus);
-      outline:none;
-    }
-
-    main {
-      width:min(1180px,calc(100% - 24px));
-      margin:22px auto 60px;
-      display:grid;
-      gap:18px;
-    }
-    .guide-card {
-      scroll-margin-top:72px;
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:18px;
-      overflow:hidden;
-      box-shadow:0 8px 28px rgba(0,0,0,.045);
-    }
-    .card-head {
-      min-height:56px;
-      padding:10px 14px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      border-bottom:1px solid #ededed;
-    }
-    .page-badge {
-      width:30px;height:30px;
-      display:grid;place-items:center;
-      border-radius:9px;
-      background:var(--uplus);
-      color:#fff;
-      font-size:13px;
-      font-weight:900;
-    }
-    .card-title {
-      font-size:14px;
-      font-weight:800;
-      color:#383838;
-    }
-    .zoom-btn {
-      margin-left:auto;
-      appearance:none;
-      border:0;
-      border-radius:10px;
-      padding:9px 12px;
-      background:#1f2937;
-      color:#fff;
-      font:inherit;
-      font-size:13px;
-      font-weight:800;
-      cursor:pointer;
-    }
-    .image-button {
-      display:block;
-      width:100%;
-      border:0;
-      padding:0;
-      margin:0;
-      background:#fff;
-      cursor:zoom-in;
-    }
-    .image-button img {
-      display:block;
-      width:100%;
-      height:auto;
-    }
-
-    footer {
-      width:min(1180px,calc(100% - 32px));
-      margin:0 auto 38px;
-      padding-top:18px;
-      border-top:1px solid var(--line);
-      text-align:center;
-      color:#8a8f98;
-      font-size:12px;
-    }
-
-    .viewer {
-      position:fixed;
-      inset:0;
-      z-index:1000;
-      display:none;
-      background:rgba(0,0,0,.94);
-      color:#fff;
-      touch-action:none;
-    }
-    .viewer.open { display:block; }
-    .viewer-top {
-      position:absolute;
-      left:0;right:0;top:0;
-      z-index:3;
-      height:62px;
-      padding:0 14px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:linear-gradient(to bottom,rgba(0,0,0,.72),rgba(0,0,0,0));
-    }
-    .viewer-title {
-      font-size:14px;
-      font-weight:800;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .viewer-count {
-      margin-left:auto;
-      font-size:13px;
-      color:#e5e7eb;
-      font-weight:700;
-    }
-    .icon-btn {
-      width:40px;height:40px;
-      border:1px solid rgba(255,255,255,.22);
-      border-radius:12px;
-      background:rgba(255,255,255,.08);
-      color:#fff;
-      font-size:22px;
-      cursor:pointer;
-    }
-    .viewer-stage {
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    #viewerImg {
-      max-width:94vw;
-      max-height:84vh;
-      object-fit:contain;
-      user-select:none;
-      -webkit-user-drag:none;
-      transform-origin:center center;
-      transition:transform .12s ease;
-      cursor:grab;
-    }
-    #viewerImg.dragging {
-      cursor:grabbing;
-      transition:none;
-    }
-    .arrow {
-      position:absolute;
-      top:50%;
-      z-index:3;
-      transform:translateY(-50%);
-      width:48px;height:56px;
-      border:0;
-      border-radius:14px;
-      background:rgba(0,0,0,.44);
-      color:#fff;
-      font-size:30px;
-      cursor:pointer;
-    }
-    .arrow.prev { left:12px; }
-    .arrow.next { right:12px; }
-
-    .viewer-tools {
-      position:absolute;
-      z-index:3;
-      left:50%;
-      bottom:max(20px,env(safe-area-inset-bottom));
-      transform:translateX(-50%);
-      display:flex;
-      align-items:center;
-      gap:7px;
-      padding:7px;
-      border-radius:14px;
-      background:rgba(20,20,20,.78);
-      border:1px solid rgba(255,255,255,.15);
-      backdrop-filter:blur(10px);
-    }
-    .viewer-tools button {
-      min-width:42px;height:40px;
-      border:0;
-      border-radius:10px;
-      background:#303030;
-      color:#fff;
-      font-size:17px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    #scaleLabel {
-      min-width:58px;
-      text-align:center;
-      font-size:12px;
-      font-weight:800;
-      color:#e5e7eb;
-    }
-
-    @media (max-width:700px) {
-      .top-inner { width:min(100% - 24px,1180px); padding:23px 0 18px; }
-      h1 { letter-spacing:-1px; }
-      .desc { font-size:14px; }
-      .notice { font-size:13px; line-height:1.5; }
-      main { margin-top:14px; gap:12px; }
-      .guide-card { border-radius:14px; }
-      .card-head { min-height:50px; padding:8px 10px; }
-      .zoom-btn { padding:8px 10px; }
-      .arrow { width:42px;height:50px;font-size:26px; }
-      .arrow.prev { left:6px; }
-      .arrow.next { right:6px; }
-      #viewerImg { max-width:98vw; max-height:80vh; }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
-<body>
-  <header class="top" id="top">
-    <div class="top-inner">
-      <div class="eyebrow">매장품질 연출가이드</div>
-      <h1>9월 2주차 연출가이드</h1>
-      <p class="desc">총 13페이지 · 매장 연출 전 페이지별 내용을 확인해 주세요.</p>
-      <div class="notice"><strong>+</strong><span>이미지를 누르면 크게 볼 수 있습니다. 확대 화면에서 이전·다음 이동 및 확대·축소가 가능합니다.</span></div>
+<body class="bg-slate-950 text-white viewport-height flex flex-col overflow-hidden">
+
+  <!-- [상단 헤더] 고정 네비게이션 -->
+  <header class="h-14 bg-slate-900/95 backdrop-blur border-b border-slate-800 flex items-center justify-between px-4 z-30 shrink-0">
+    <div>
+      <h1 class="text-base font-bold text-slate-100 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+        9월 2주차 연출가이드
+      </h1>
+      <p class="text-[11px] text-slate-400">매장 표준 연출 가이드 (총 40컷)</p>
+    </div>
+
+    <!-- 뷰 모드 전환 버튼 & 바로가기 -->
+    <div class="flex items-center gap-2">
+      <!-- 번호 선택 드롭다운 -->
+      <select id="jumpSelect" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-500">
+        <!-- JS로 1~40 옵션 자동 생성 -->
+      </select>
+
+      <!-- 모아보기 토글 버튼 -->
+      <button id="viewToggleBtn" class="bg-blue-600 hover:bg-blue-500 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95">
+        <svg id="gridIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+        <span id="viewToggleText">모아보기</span>
+      </button>
     </div>
   </header>
 
-  <nav class="quick-wrap" aria-label="페이지 빠른 이동">
-    <div class="quick">
-      <span class="label">빠른 이동</span>
-      <a href="#page-1" aria-label="1페이지로 이동">1</a><a href="#page-2" aria-label="2페이지로 이동">2</a><a href="#page-3" aria-label="3페이지로 이동">3</a><a href="#page-4" aria-label="4페이지로 이동">4</a><a href="#page-5" aria-label="5페이지로 이동">5</a><a href="#page-6" aria-label="6페이지로 이동">6</a><a href="#page-7" aria-label="7페이지로 이동">7</a><a href="#page-8" aria-label="8페이지로 이동">8</a><a href="#page-9" aria-label="9페이지로 이동">9</a><a href="#page-10" aria-label="10페이지로 이동">10</a><a href="#page-11" aria-label="11페이지로 이동">11</a><a href="#page-12" aria-label="12페이지로 이동">12</a><a href="#page-13" aria-label="13페이지로 이동">13</a>
-    </div>
-  </nav>
-
-  <main>
+  <!-- [메인 콘텐츠 영역] -->
+  <main class="relative flex-1 w-full overflow-hidden bg-slate-950">
     
-      <section class="guide-card" id="page-1">
-        <div class="card-head">
-          <span class="page-badge">1</span>
-          <span class="card-title">연출가이드 1페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(0)" aria-label="1페이지 확대">확대보기</button>
+    <!-- 1. 슬라이더 뷰 (기본 모드 : 핀치줌 & 스와이프) -->
+    <div id="sliderView" class="h-full w-full">
+      <div class="swiper mySwiper h-full w-full">
+        <div class="swiper-wrapper" id="swiperWrapper">
+          <!-- 1번~40번 슬라이드가 자바스크립트로 자동 삽입됩니다 -->
         </div>
-        <button class="image-button" type="button" onclick="openViewer(0)" aria-label="1페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578541.png" alt="매장품질 9월 2주차 연출가이드 1페이지" loading="eager">
-        </button>
-      </section>
 
-      <section class="guide-card" id="page-2">
-        <div class="card-head">
-          <span class="page-badge">2</span>
-          <span class="card-title">연출가이드 2페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(1)" aria-label="2페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(1)" aria-label="2페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578644.png" alt="매장품질 9월 2주차 연출가이드 2페이지" loading="eager">
-        </button>
-      </section>
+        <!-- 좌우 화살표 (태블릿/PC 및 터치 편의) -->
+        <button class="swiper-button-prev !text-white/60 !w-8 !h-8 after:!text-xl hidden sm:flex"></button>
+        <button class="swiper-button-next !text-white/60 !w-8 !h-8 after:!text-xl hidden sm:flex"></button>
+      </div>
 
-      <section class="guide-card" id="page-3">
-        <div class="card-head">
-          <span class="page-badge">3</span>
-          <span class="card-title">연출가이드 3페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(2)" aria-label="3페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(2)" aria-label="3페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578705.png" alt="매장품질 9월 2주차 연출가이드 3페이지" loading="lazy">
-        </button>
-      </section>
+      <!-- 상단 확대 안내 팁 (3초 후 서서히 사라짐) -->
+      <div id="zoomGuideToast" class="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-black/75 backdrop-blur px-3 py-1.5 rounded-full text-[11px] text-slate-300 pointer-events-none flex items-center gap-1.5 shadow-lg transition-opacity duration-700">
+        <span>✌️ 두 손가락으로 사진 확대 / 더블탭 확대 가능</span>
+      </div>
+    </div>
 
-      <section class="guide-card" id="page-4">
-        <div class="card-head">
-          <span class="page-badge">4</span>
-          <span class="card-title">연출가이드 4페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(3)" aria-label="4페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(3)" aria-label="4페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578768.png" alt="매장품질 9월 2주차 연출가이드 4페이지" loading="lazy">
-        </button>
-      </section>
+    <!-- 2. 전체 모아보기 그리드 뷰 (숨김 기본) -->
+    <div id="gridView" class="hidden h-full w-full overflow-y-auto p-3 no-scrollbar">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" id="gridContainer">
+        <!-- 40개 썸네일 카드가 자바스크립트로 자동 생성됩니다 -->
+      </div>
+    </div>
 
-      <section class="guide-card" id="page-5">
-        <div class="card-head">
-          <span class="page-badge">5</span>
-          <span class="card-title">연출가이드 5페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(4)" aria-label="5페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(4)" aria-label="5페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578827.png" alt="매장품질 9월 2주차 연출가이드 5페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-6">
-        <div class="card-head">
-          <span class="page-badge">6</span>
-          <span class="card-title">연출가이드 6페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(5)" aria-label="6페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(5)" aria-label="6페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578881.png" alt="매장품질 9월 2주차 연출가이드 6페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-7">
-        <div class="card-head">
-          <span class="page-badge">7</span>
-          <span class="card-title">연출가이드 7페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(6)" aria-label="7페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(6)" aria-label="7페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578929.png" alt="매장품질 9월 2주차 연출가이드 7페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-8">
-        <div class="card-head">
-          <span class="page-badge">8</span>
-          <span class="card-title">연출가이드 8페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(7)" aria-label="8페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(7)" aria-label="8페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578980.png" alt="매장품질 9월 2주차 연출가이드 8페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-9">
-        <div class="card-head">
-          <span class="page-badge">9</span>
-          <span class="card-title">연출가이드 9페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(8)" aria-label="9페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(8)" aria-label="9페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579020.png" alt="매장품질 9월 2주차 연출가이드 9페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-10">
-        <div class="card-head">
-          <span class="page-badge">10</span>
-          <span class="card-title">연출가이드 10페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(9)" aria-label="10페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(9)" aria-label="10페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579061.png" alt="매장품질 9월 2주차 연출가이드 10페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-11">
-        <div class="card-head">
-          <span class="page-badge">11</span>
-          <span class="card-title">연출가이드 11페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(10)" aria-label="11페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(10)" aria-label="11페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579107.png" alt="매장품질 9월 2주차 연출가이드 11페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-12">
-        <div class="card-head">
-          <span class="page-badge">12</span>
-          <span class="card-title">연출가이드 12페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(11)" aria-label="12페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(11)" aria-label="12페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579149.png" alt="매장품질 9월 2주차 연출가이드 12페이지" loading="lazy">
-        </button>
-      </section>
-
-      <section class="guide-card" id="page-13">
-        <div class="card-head">
-          <span class="page-badge">13</span>
-          <span class="card-title">연출가이드 13페이지</span>
-          <button class="zoom-btn" type="button" onclick="openViewer(12)" aria-label="13페이지 확대">확대보기</button>
-        </div>
-        <button class="image-button" type="button" onclick="openViewer(12)" aria-label="13페이지 이미지 확대">
-          <img src="https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579219.png" alt="매장품질 9월 2주차 연출가이드 13페이지" loading="lazy">
-        </button>
-      </section>
   </main>
 
-  <footer>매장품질 9월 2주차 연출가이드</footer>
+  <!-- [하단 컨트롤러 바] -->
+  <footer class="h-12 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between px-4 z-30 shrink-0">
+    <!-- 이전 버튼 -->
+    <button id="prevBtn" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-slate-800 text-slate-300 active:bg-slate-700 flex items-center gap-1">
+      ◀ 이전
+    </button>
 
-  <div class="viewer" id="viewer" aria-hidden="true">
-    <div class="viewer-top">
-      <div class="viewer-title">매장품질 9월 2주차 연출가이드</div>
-      <div class="viewer-count" id="viewerCount">1 / 13</div>
-      <button class="icon-btn" type="button" onclick="closeViewer()" aria-label="닫기">×</button>
+    <!-- 현재 페이지 카운터 -->
+    <div class="text-xs font-bold text-slate-300">
+      <span id="currentPageNum" class="text-blue-400 text-sm">1</span> / <span id="totalPageNum">40</span>
     </div>
 
-    <div class="viewer-stage" id="viewerStage">
-      <img id="viewerImg" src="" alt="">
-    </div>
+    <!-- 다음 버튼 -->
+    <button id="nextBtn" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-blue-600 text-white active:bg-blue-700 flex items-center gap-1">
+      다음 ▶
+    </button>
+  </footer>
 
-    <button class="arrow prev" type="button" onclick="changeImage(-1)" aria-label="이전 페이지">‹</button>
-    <button class="arrow next" type="button" onclick="changeImage(1)" aria-label="다음 페이지">›</button>
+  <!-- Swiper.js 스크립트 -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <div class="viewer-tools">
-      <button type="button" onclick="zoomBy(-0.25)" aria-label="축소">−</button>
-      <span id="scaleLabel">100%</span>
-      <button type="button" onclick="zoomBy(0.25)" aria-label="확대">＋</button>
-      <button type="button" onclick="resetZoom()" aria-label="원래 크기">↺</button>
-    </div>
-  </div>
+  <script>
+    const TOTAL_IMAGES = 40;
+    // GitHub 원본 이미지 기본 경로
+    const BASE_IMAGE_URL = 'https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/%EC%9D%B4%EB%AF%B8%EC%A7%80%20';
 
-<script>
-  const images = ['https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578541.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578644.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578705.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578768.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578827.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578881.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578929.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742578980.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579020.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579061.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579107.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579149.png', 'https://raw.githubusercontent.com/jeongkisun/cl/refs/heads/main/1788742579219.png'];
-  let currentIndex = 0;
-  let scale = 1;
-  let tx = 0, ty = 0;
-  let dragging = false;
-  let startX = 0, startY = 0, startTx = 0, startTy = 0;
+    const swiperWrapper = document.getElementById('swiperWrapper');
+    const gridContainer = document.getElementById('gridContainer');
+    const jumpSelect = document.getElementById('jumpSelect');
+    const currentPageNum = document.getElementById('currentPageNum');
+    const totalPageNum = document.getElementById('totalPageNum');
+    const viewToggleBtn = document.getElementById('viewToggleBtn');
+    const viewToggleText = document.getElementById('viewToggleText');
+    const sliderView = document.getElementById('sliderView');
+    const gridView = document.getElementById('gridView');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
-  const viewer = document.getElementById('viewer');
-  const viewerImg = document.getElementById('viewerImg');
-  const viewerCount = document.getElementById('viewerCount');
-  const scaleLabel = document.getElementById('scaleLabel');
-  const stage = document.getElementById('viewerStage');
+    totalPageNum.textContent = TOTAL_IMAGES;
 
-  function renderTransform() {
-    viewerImg.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-    scaleLabel.textContent = Math.round(scale * 100) + '%';
-  }
+    // 1. 1번부터 40번까지 슬라이드, 그리드, 드롭다운 동적 생성
+    for (let i = 1; i <= TOTAL_IMAGES; i++) {
+      const imgUrl = `${BASE_IMAGE_URL}(${i}).jfif`;
 
-  function resetZoom() {
-    scale = 1; tx = 0; ty = 0;
-    renderTransform();
-  }
+      // (1) 드롭다운 옵션
+      const option = document.createElement('option');
+      option.value = i - 1;
+      option.textContent = `${i}번 가이드`;
+      jumpSelect.appendChild(option);
 
-  function openViewer(index) {
-    currentIndex = index;
-    viewerImg.src = images[currentIndex];
-    viewerImg.alt = `매장품질 9월 2주차 연출가이드 ${currentIndex + 1}페이지`;
-    viewerCount.textContent = `${currentIndex + 1} / ${images.length}`;
-    resetZoom();
-    viewer.classList.add('open');
-    viewer.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-  }
+      // (2) Swiper 슬라이드 생성 (양손가락 핀치 줌을 위한 swiper-zoom-container)
+      const slide = document.createElement('div');
+      slide.className = 'swiper-slide';
+      slide.innerHTML = `
+        <div class="swiper-zoom-container">
+          <img 
+            src="${imgUrl}" 
+            alt="가이드 이미지 ${i}" 
+            loading="lazy"
+            onerror="handleImgError(this, ${i})"
+          />
+        </div>
+      `;
+      swiperWrapper.appendChild(slide);
 
-  function closeViewer() {
-    viewer.classList.remove('open');
-    viewer.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-    resetZoom();
-  }
+      // (3) 그리드 썸네일 카드 생성
+      const gridCard = document.createElement('div');
+      gridCard.className = 'bg-slate-900 border border-slate-800 rounded-lg overflow-hidden cursor-pointer active:scale-95 transition-transform relative aspect-[4/3] flex flex-col justify-end';
+      gridCard.onclick = () => jumpToSlide(i - 1);
+      gridCard.innerHTML = `
+        <img 
+          src="${imgUrl}" 
+          alt="썸네일 ${i}" 
+          class="absolute inset-0 w-full h-full object-cover" 
+          loading="lazy"
+          onerror="handleThumbnailError(this, ${i})"
+        />
+        <div class="relative z-10 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-1.5 text-center">
+          <span class="text-[11px] font-bold text-white bg-blue-600/80 px-1.5 py-0.5 rounded">${i}번</span>
+        </div>
+      `;
+      gridContainer.appendChild(gridCard);
+    }
 
-  function changeImage(direction) {
-    currentIndex = (currentIndex + direction + images.length) % images.length;
-    viewerImg.src = images[currentIndex];
-    viewerImg.alt = `매장품질 9월 2주차 연출가이드 ${currentIndex + 1}페이지`;
-    viewerCount.textContent = `${currentIndex + 1} / ${images.length}`;
-    resetZoom();
-  }
+    // 아직 업로드되지 않은 이미지가 있을 경우 보여주는 안내 UI
+    function handleImgError(imgElement, index) {
+      imgElement.onerror = null;
+      const parent = imgElement.parentElement;
+      parent.innerHTML = `
+        <div class="flex flex-col items-center justify-center text-slate-500 p-6 text-center">
+          <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-3 text-slate-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <span class="text-sm font-semibold text-slate-300 mb-1">${index}번 이미지 준비 중</span>
+          <span class="text-xs text-slate-500">이미지가 업로드되면 자동으로 표시됩니다.</span>
+        </div>
+      `;
+    }
 
-  function zoomBy(delta) {
-    scale = Math.min(4, Math.max(0.75, scale + delta));
-    if (scale <= 1) { tx = 0; ty = 0; }
-    renderTransform();
-  }
+    function handleThumbnailError(imgElement, index) {
+      imgElement.onerror = null;
+      imgElement.style.display = 'none';
+      imgElement.parentElement.classList.add('bg-slate-800', 'items-center', 'justify-center');
+    }
 
-  stage.addEventListener('wheel', (e) => {
-    if (!viewer.classList.contains('open')) return;
-    e.preventDefault();
-    zoomBy(e.deltaY < 0 ? 0.2 : -0.2);
-  }, { passive:false });
+    // 2. Swiper 초기화 (핀치 줌 & 모바일 제스처 최적화)
+    const swiper = new Swiper('.mySwiper', {
+      zoom: {
+        maxRatio: 4,       // 최대 4배까지 핀치 줌 확대
+        minRatio: 1,
+        toggle: true,      // 더블 탭으로 확대/축소
+      },
+      loop: false,
+      lazy: {
+        loadPrevNext: true,
+        loadPrevNextAmount: 2, // 앞뒤 2장 미리 로딩해 로딩 지연 최소화
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      keyboard: {
+        enabled: true,
+      },
+      on: {
+        slideChange: function () {
+          const index = this.activeIndex;
+          currentPageNum.textContent = index + 1;
+          jumpSelect.value = index;
+        }
+      }
+    });
 
-  viewerImg.addEventListener('dblclick', () => {
-    if (scale === 1) scale = 2;
-    else { scale = 1; tx = 0; ty = 0; }
-    renderTransform();
-  });
+    // 3. 컨트롤러 이벤트 연결
+    prevBtn.addEventListener('click', () => swiper.slidePrev());
+    nextBtn.addEventListener('click', () => swiper.slideNext());
 
-  viewerImg.addEventListener('pointerdown', (e) => {
-    if (scale <= 1) return;
-    dragging = true;
-    viewerImg.classList.add('dragging');
-    viewerImg.setPointerCapture(e.pointerId);
-    startX = e.clientX; startY = e.clientY;
-    startTx = tx; startTy = ty;
-  });
+    jumpSelect.addEventListener('change', (e) => {
+      swiper.slideTo(parseInt(e.target.value));
+      switchToSliderView();
+    });
 
-  viewerImg.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    tx = startTx + (e.clientX - startX);
-    ty = startTy + (e.clientY - startY);
-    renderTransform();
-  });
+    function jumpToSlide(index) {
+      swiper.slideTo(index);
+      switchToSliderView();
+    }
 
-  function endDrag(e) {
-    if (!dragging) return;
-    dragging = false;
-    viewerImg.classList.remove('dragging');
-    try { viewerImg.releasePointerCapture(e.pointerId); } catch (_) {}
-  }
-  viewerImg.addEventListener('pointerup', endDrag);
-  viewerImg.addEventListener('pointercancel', endDrag);
+    // 4. 슬라이드 뷰 ↔ 그리드 모아보기 전환 로직
+    let isGridView = false;
 
-  viewer.addEventListener('click', (e) => {
-    if (e.target === viewer || e.target === stage) closeViewer();
-  });
+    viewToggleBtn.addEventListener('click', () => {
+      if (!isGridView) {
+        // 그리드 모드로 전환
+        sliderView.classList.add('hidden');
+        gridView.classList.remove('hidden');
+        viewToggleText.textContent = '슬라이드';
+        isGridView = true;
+      } else {
+        switchToSliderView();
+      }
+    });
 
-  document.addEventListener('keydown', (e) => {
-    if (!viewer.classList.contains('open')) return;
-    if (e.key === 'Escape') closeViewer();
-    if (e.key === 'ArrowLeft') changeImage(-1);
-    if (e.key === 'ArrowRight') changeImage(1);
-    if (e.key === '+' || e.key === '=') zoomBy(0.25);
-    if (e.key === '-') zoomBy(-0.25);
-  });
-</script>
+    function switchToSliderView() {
+      gridView.classList.add('hidden');
+      sliderView.classList.remove('hidden');
+      viewToggleText.textContent = '모아보기';
+      isGridView = false;
+      swiper.update(); // 크기 재계산
+    }
+
+    // 5. 줌 안내 툴팁 3초 뒤 페이드아웃
+    setTimeout(() => {
+      const toast = document.getElementById('zoomGuideToast');
+      if (toast) {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 700);
+      }
+    }, 3200);
+  </script>
 </body>
 </html>
