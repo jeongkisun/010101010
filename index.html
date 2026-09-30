@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -52,33 +53,49 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    /* 모달 애니메이션 */
+    .modal-enter {
+      animation: fadeIn 0.2s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; backdrop-filter: blur(0px); }
+      to { opacity: 1; backdrop-filter: blur(4px); }
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-white viewport-height flex flex-col overflow-hidden">
 
   <!-- [상단 헤더] 고정 네비게이션 -->
-  <header class="h-14 bg-slate-900/95 backdrop-blur border-b border-slate-800 flex items-center justify-between px-4 z-30 shrink-0">
-    <div>
-      <h1 class="text-base font-bold text-slate-100 flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+  <header class="h-14 bg-slate-900/95 backdrop-blur border-b border-slate-800 flex items-center justify-between px-3 sm:px-4 z-30 shrink-0">
+    <div class="truncate pr-2">
+      <h1 class="text-sm sm:text-base font-bold text-slate-100 flex items-center gap-1.5 truncate">
+        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0"></span>
         10월 1주차 연출가이드
       </h1>
-      <p class="text-[11px] text-slate-400">매장 표준 연출 가이드 (총 40컷)</p>
     </div>
 
-    <!-- 뷰 모드 전환 버튼 & 바로가기 -->
-    <div class="flex items-center gap-2">
+    <!-- 우측 컨트롤 영역 -->
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
       <!-- 번호 선택 드롭다운 -->
-      <select id="jumpSelect" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-500">
+      <select id="jumpSelect" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-1.5 py-1.5 focus:outline-none focus:border-blue-500 max-w-[80px] sm:max-w-none">
         <!-- JS로 1~40 옵션 자동 생성 -->
       </select>
 
+      <!-- 체크리스트 버튼 -->
+      <button id="checklistBtn" class="bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-md shadow-emerald-900/20">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+        </svg>
+        <span class="hidden sm:inline">체크리스트</span>
+        <span class="sm:hidden">체크</span>
+      </button>
+
       <!-- 모아보기 토글 버튼 -->
-      <button id="viewToggleBtn" class="bg-blue-600 hover:bg-blue-500 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95">
+      <button id="viewToggleBtn" class="bg-blue-600 hover:bg-blue-500 text-xs font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-md shadow-blue-900/20">
         <svg id="gridIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
         </svg>
-        <span id="viewToggleText">모아보기</span>
+        <span id="viewToggleText" class="hidden sm:inline">모아보기</span>
       </button>
     </div>
   </header>
@@ -99,24 +116,23 @@
       </div>
 
       <!-- 상단 확대 안내 팁 (3초 후 서서히 사라짐) -->
-      <div id="zoomGuideToast" class="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-black/75 backdrop-blur px-3 py-1.5 rounded-full text-[11px] text-slate-300 pointer-events-none flex items-center gap-1.5 shadow-lg transition-opacity duration-700">
+      <div id="zoomGuideToast" class="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-black/75 backdrop-blur px-3 py-1.5 rounded-full text-[11px] text-slate-300 pointer-events-none flex items-center gap-1.5 shadow-lg transition-opacity duration-700 whitespace-nowrap">
         <span>✌️ 두 손가락으로 사진 확대 / 더블탭 확대 가능</span>
       </div>
     </div>
 
     <!-- 2. 전체 모아보기 그리드 뷰 (숨김 기본) -->
-    <div id="gridView" class="hidden h-full w-full overflow-y-auto p-3 no-scrollbar">
+    <div id="gridView" class="hidden h-full w-full overflow-y-auto p-3 no-scrollbar pb-20">
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" id="gridContainer">
         <!-- 40개 썸네일 카드가 자바스크립트로 자동 생성됩니다 -->
       </div>
     </div>
-
   </main>
 
   <!-- [하단 컨트롤러 바] -->
-  <footer class="h-12 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between px-4 z-30 shrink-0">
+  <footer class="h-12 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between px-4 z-30 shrink-0 pb-safe">
     <!-- 이전 버튼 -->
-    <button id="prevBtn" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-slate-800 text-slate-300 active:bg-slate-700 flex items-center gap-1">
+    <button id="prevBtn" class="text-xs font-semibold px-4 py-2 rounded-md bg-slate-800 text-slate-300 active:bg-slate-700 flex items-center gap-1 touch-manipulation">
       ◀ 이전
     </button>
 
@@ -126,10 +142,52 @@
     </div>
 
     <!-- 다음 버튼 -->
-    <button id="nextBtn" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-blue-600 text-white active:bg-blue-700 flex items-center gap-1">
+    <button id="nextBtn" class="text-xs font-semibold px-4 py-2 rounded-md bg-blue-600 text-white active:bg-blue-700 flex items-center gap-1 touch-manipulation">
       다음 ▶
     </button>
   </footer>
+
+  <!-- [체크리스트 모달 오버레이] (기본 숨김) -->
+  <div id="checklistModal" class="fixed top-0 left-0 right-0 bottom-0 z-50 hidden bg-black/95 flex-col modal-enter h-[100dvh] w-full">
+    
+    <!-- 모달 상단 헤더 -->
+    <div class="h-14 bg-slate-900 border-b border-slate-700 flex items-center justify-between px-4 shrink-0 shadow-lg relative z-10">
+      <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        점검 체크리스트
+      </h2>
+      
+      <!-- 닫기 버튼 -->
+      <button id="closeChecklistBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-full p-1.5 active:scale-95 transition-transform">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 체크리스트 이미지 스크롤 영역 -->
+    <!-- iOS 스크롤 끊김 방지를 위해 -webkit-overflow-scrolling 추가 및 로딩 지연 제거됨 -->
+    <div class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-950 w-full touch-pan-y" style="-webkit-overflow-scrolling: touch;">
+      <div class="w-full max-w-2xl mx-auto flex flex-col">
+        <img 
+          src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL1.png" 
+          alt="체크리스트 파트 1" 
+          class="w-full h-auto block m-0 p-0"
+        />
+        <img 
+          src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL2.png" 
+          alt="체크리스트 파트 2" 
+          class="w-full h-auto block m-0 p-0"
+        />
+      </div>
+      
+      <div class="pb-16 pt-4 text-center">
+        <p class="text-slate-500 text-xs">위아래로 스크롤하여 전체 내용을 확인하세요.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Swiper.js 스크립트 -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -160,7 +218,7 @@
       // (1) 드롭다운 옵션
       const option = document.createElement('option');
       option.value = i - 1;
-      option.textContent = `${i}번 가이드`;
+      option.textContent = `${i}번`; // 모바일 화면 고려 텍스트 간소화
       jumpSelect.appendChild(option);
 
       // (2) Swiper 슬라이드 생성 (양손가락 핀치 줌을 위한 swiper-zoom-container)
@@ -197,7 +255,6 @@
       gridContainer.appendChild(gridCard);
     }
 
-    // 아직 업로드되지 않은 이미지가 있을 경우 보여주는 안내 UI
     function handleImgError(imgElement, index) {
       imgElement.onerror = null;
       const parent = imgElement.parentElement;
@@ -209,7 +266,6 @@
             </svg>
           </div>
           <span class="text-sm font-semibold text-slate-300 mb-1">${index}번 이미지 준비 중</span>
-          <span class="text-xs text-slate-500">이미지가 업로드되면 자동으로 표시됩니다.</span>
         </div>
       `;
     }
@@ -223,14 +279,14 @@
     // 2. Swiper 초기화 (핀치 줌 & 모바일 제스처 최적화)
     const swiper = new Swiper('.mySwiper', {
       zoom: {
-        maxRatio: 4,       // 최대 4배까지 핀치 줌 확대
+        maxRatio: 4,
         minRatio: 1,
-        toggle: true,      // 더블 탭으로 확대/축소
+        toggle: true,
       },
       loop: false,
       lazy: {
         loadPrevNext: true,
-        loadPrevNextAmount: 2, // 앞뒤 2장 미리 로딩해 로딩 지연 최소화
+        loadPrevNextAmount: 2,
       },
       navigation: {
         nextEl: '.swiper-button-next',
@@ -267,7 +323,6 @@
 
     viewToggleBtn.addEventListener('click', () => {
       if (!isGridView) {
-        // 그리드 모드로 전환
         sliderView.classList.add('hidden');
         gridView.classList.remove('hidden');
         viewToggleText.textContent = '슬라이드';
@@ -282,10 +337,10 @@
       sliderView.classList.remove('hidden');
       viewToggleText.textContent = '모아보기';
       isGridView = false;
-      swiper.update(); // 크기 재계산
+      swiper.update();
     }
 
-    // 5. 줌 안내 툴팁 3초 뒤 페이드아웃
+    // 5. 줌 안내 툴팁 페이드아웃
     setTimeout(() => {
       const toast = document.getElementById('zoomGuideToast');
       if (toast) {
@@ -293,106 +348,37 @@
         setTimeout(() => toast.remove(), 700);
       }
     }, 3200);
+
+    // 6. 체크리스트 모달 제어 로직
+    const checklistBtn = document.getElementById('checklistBtn');
+    const closeChecklistBtn = document.getElementById('closeChecklistBtn');
+    const checklistModal = document.getElementById('checklistModal');
+
+    // 열기
+    checklistBtn.addEventListener('click', () => {
+      checklistModal.classList.remove('hidden');
+      checklistModal.classList.add('flex');
+      // 모달이 열릴 때 배경 스크롤 방지
+      document.body.style.overflow = 'hidden'; 
+    });
+
+    // 닫기 (버튼 클릭)
+    closeChecklistBtn.addEventListener('click', closeChecklist);
+
+    // 닫기 (배경 영역 클릭 시)
+    checklistModal.addEventListener('click', (e) => {
+      // 이미지 클릭이 아닌 어두운 배경 클릭 시에만 닫히도록 처리
+      if (e.target === checklistModal || e.target.classList.contains('flex-1')) {
+        closeChecklist();
+      }
+    });
+
+    function closeChecklist() {
+      checklistModal.classList.add('hidden');
+      checklistModal.classList.remove('flex');
+      document.body.style.overflow = ''; // 배경 스크롤 복구
+    }
   </script>
 </body>
 </html>
-<!-- 우측 컨트롤 영역 -->
-<div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-  <!-- 번호 선택 드롭다운 -->
-  <select id="jumpSelect" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-1.5 py-1.5 focus:outline-none focus:border-blue-500 max-w-[80px] sm:max-w-none">
-    <!-- JS로 1~40 옵션 자동 생성 -->
-  </select>
-
-  <!-- 체크리스트 버튼 (신규 추가) -->
-  <button id="checklistBtn" class="bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-md shadow-emerald-900/20">
-    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-    </svg>
-    <span class="hidden sm:inline">체크리스트</span>
-    <span class="sm:hidden">체크</span>
-  </button>
-
-  <!-- 모아보기 토글 버튼 -->
-  <button id="viewToggleBtn" class="bg-blue-600 hover:bg-blue-500 text-xs font-semibold px-2 py-1.5 rounded-lg flex items-center gap-1 transition-all active:scale-95 shadow-md shadow-blue-900/20">
-    <svg id="gridIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-    </svg>
-    <span id="viewToggleText" class="hidden sm:inline">모아보기</span>
-  </button>
-</div>
-
-
-<!-- 1. 슬라이더 뷰 (기본 모드 : 핀치줌 & 스와이프) -->
-<div id="sliderView" class="h-full w-full">
-  <div class="swiper mySwiper h-full w-full">
-    <div class="swiper-wrapper" id="swiperWrapper">
-      <!-- 1번~40번 슬라이드가 자바스크립트로 자동 삽입됩니다 -->
-    </div>
-
-    <!-- 좌우 화살표 (태블릿/PC 및 터치 편의) -->
-    <button class="swiper-button-prev !text-white/60 !w-8 !h-8 after:!text-xl hidden sm:flex"></button>
-    <button class="swiper-button-next !text-white/60 !w-8 !h-8 after:!text-xl hidden sm:flex"></button>
-  </div>
-
-  <!-- 상단 확대 안내 팁 (3초 후 서서히 사라짐) -->
-  <div id="zoomGuideToast" class="absolute top-3 left-1/2 -translate-x-1/2 z-20 bg-black/75 backdrop-blur px-3 py-1.5 rounded-full text-[11px] text-slate-300 pointer-events-none flex items-center gap-1.5 shadow-lg transition-opacity duration-700 whitespace-nowrap">
-    <span>✌️ 두 손가락으로 사진 확대 / 더블탭 확대 가능</span>
-  </div>
-</div>
-
-<!-- 2. 전체 모아보기 그리드 뷰 (숨김 기본) -->
-<div id="gridView" class="hidden h-full w-full overflow-y-auto p-3 no-scrollbar pb-20">
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" id="gridContainer">
-    <!-- 40개 썸네일 카드가 자바스크립트로 자동 생성됩니다 -->
-  </div>
-</div>
-
-
-<!-- 현재 페이지 카운터 -->
-<div class="text-xs font-bold text-slate-300">
-  <span id="currentPageNum" class="text-blue-400 text-sm">1</span> / <span id="totalPageNum">40</span>
-</div>
-
-<!-- 다음 버튼 -->
-<button id="nextBtn" class="text-xs font-semibold px-4 py-2 rounded-md bg-blue-600 text-white active:bg-blue-700 flex items-center gap-1 touch-manipulation">
-  다음 ▶
-</button>
-
-
-<!-- 모달 상단 헤더 -->
-<div class="h-14 bg-slate-900 border-b border-slate-700 flex items-center justify-between px-4 shrink-0 shadow-lg relative z-10">
-  <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-    </svg>
-    점검 체크리스트
-  </h2>
-  
-  <!-- 닫기 버튼 -->
-  <button id="closeChecklistBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-full p-1.5 active:scale-95 transition-transform">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-    </svg>
-  </button>
-</div>
-
-<!-- 체크리스트 이미지 스크롤 영역 -->
-<div class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-950 w-full touch-pan-y" style="-webkit-overflow-scrolling: touch;">
-  <div class="w-full max-w-2xl mx-auto flex flex-col">
-    <!-- 체크리스트 이미지 (지연 로딩 제거됨) -->
-    <img 
-      src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL1.png" 
-      alt="체크리스트 파트 1" 
-      class="w-full h-auto block m-0 p-0"
-    />
-    <img 
-      src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL2.png" 
-      alt="체크리스트 파트 2" 
-      class="w-full h-auto block m-0 p-0"
-    />
-  </div>
-  
-  <div class="pb-16 pt-4 text-center">
-    <p class="text-slate-500 text-xs">위아래로 스크롤하여 전체 내용을 확인하세요.</p>
-  </div>
-</div>
+```
