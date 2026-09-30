@@ -39,6 +39,7 @@
       align-items: center;
       justify-content: center;
     }
+    
     .swiper-zoom-container > img {
       max-width: 100%;
       max-height: 100%;
@@ -61,6 +62,9 @@
       from { opacity: 0; backdrop-filter: blur(0px); }
       to { opacity: 1; backdrop-filter: blur(4px); }
     }
+    /* 체크리스트 전용 페이지네이션 색상 */
+    .checklist-pagination .swiper-pagination-bullet { background-color: #94a3b8; opacity: 0.5; }
+    .checklist-pagination .swiper-pagination-bullet-active { background-color: #10b981; opacity: 1; }
   </style>
 </head>
 <body class="bg-slate-950 text-white viewport-height flex flex-col overflow-hidden">
@@ -167,24 +171,30 @@
       </button>
     </div>
 
-    <!-- 체크리스트 이미지 스크롤 영역 -->
-    <!-- iOS 스크롤 끊김 방지를 위해 -webkit-overflow-scrolling 추가 및 로딩 지연 제거됨 -->
-    <div class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-950 w-full touch-pan-y" style="-webkit-overflow-scrolling: touch;">
-      <div class="w-full max-w-2xl mx-auto flex flex-col">
-        <img 
-          src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL1.png" 
-          alt="체크리스트 파트 1" 
-          class="w-full h-auto block m-0 p-0"
-        />
-        <img 
-          src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL2.png" 
-          alt="체크리스트 파트 2" 
-          class="w-full h-auto block m-0 p-0"
-        />
+    <!-- 체크리스트 전용 슬라이더 영역 (확대 지원) -->
+    <div class="flex-1 w-full min-h-0 relative">
+      <div class="swiper checklistSwiper h-full w-full">
+        <div class="swiper-wrapper">
+          <!-- 체크리스트 파트 1 -->
+          <div class="swiper-slide !bg-transparent">
+            <div class="swiper-zoom-container">
+              <img src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL1.png" alt="체크리스트 파트 1" class="w-full h-auto object-contain" />
+            </div>
+          </div>
+          <!-- 체크리스트 파트 2 -->
+          <div class="swiper-slide !bg-transparent">
+            <div class="swiper-zoom-container">
+              <img src="https://raw.githubusercontent.com/jeongkisun/010101010/refs/heads/main/images/CL2.png" alt="체크리스트 파트 2" class="w-full h-auto object-contain" />
+            </div>
+          </div>
+        </div>
+        <!-- 하단 인디케이터 (점) -->
+        <div class="swiper-pagination checklist-pagination !bottom-6"></div>
       </div>
       
-      <div class="pb-16 pt-4 text-center">
-        <p class="text-slate-500 text-xs">위아래로 스크롤하여 전체 내용을 확인하세요.</p>
+      <!-- 상단 확대 안내 팁 -->
+      <div class="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-black/75 backdrop-blur px-4 py-1.5 rounded-full text-[11px] text-slate-300 pointer-events-none flex items-center gap-1.5 shadow-lg whitespace-nowrap">
+        <span>✌️ 핀치 줌 확대 / ↔ 좌우 스와이프</span>
       </div>
     </div>
   </div>
@@ -276,7 +286,7 @@
       imgElement.parentElement.classList.add('bg-slate-800', 'items-center', 'justify-center');
     }
 
-    // 2. Swiper 초기화 (핀치 줌 & 모바일 제스처 최적화)
+    // 2. 메인 Swiper 초기화 (핀치 줌 & 모바일 제스처 최적화)
     const swiper = new Swiper('.mySwiper', {
       zoom: {
         maxRatio: 4,
@@ -304,7 +314,7 @@
       }
     });
 
-    // 3. 컨트롤러 이벤트 연결
+    // 3. 메인 컨트롤러 이벤트 연결
     prevBtn.addEventListener('click', () => swiper.slidePrev());
     nextBtn.addEventListener('click', () => swiper.slideNext());
 
@@ -349,10 +359,11 @@
       }
     }, 3200);
 
-    // 6. 체크리스트 모달 제어 로직
+    // 6. 체크리스트 모달 제어 로직 (전용 슬라이더 적용)
     const checklistBtn = document.getElementById('checklistBtn');
     const closeChecklistBtn = document.getElementById('closeChecklistBtn');
     const checklistModal = document.getElementById('checklistModal');
+    let checklistSwiperInstance = null; // 체크리스트용 스와이퍼 변수
 
     // 열기
     checklistBtn.addEventListener('click', () => {
@@ -360,23 +371,39 @@
       checklistModal.classList.add('flex');
       // 모달이 열릴 때 배경 스크롤 방지
       document.body.style.overflow = 'hidden'; 
+      
+      // 모달이 처음 열릴 때 체크리스트 전용 스와이퍼 초기화
+      if (!checklistSwiperInstance) {
+        checklistSwiperInstance = new Swiper('.checklistSwiper', {
+          zoom: {
+            maxRatio: 4, // 최대 4배 확대
+            minRatio: 1,
+            toggle: true, // 더블 탭 확대 지원
+          },
+          loop: false,
+          pagination: {
+            el: '.checklist-pagination',
+            clickable: true,
+          }
+        });
+      } else {
+        // 이미 생성되어 있다면 크기 업데이트
+        checklistSwiperInstance.update();
+      }
     });
 
     // 닫기 (버튼 클릭)
     closeChecklistBtn.addEventListener('click', closeChecklist);
 
-    // 닫기 (배경 영역 클릭 시)
-    checklistModal.addEventListener('click', (e) => {
-      // 이미지 클릭이 아닌 어두운 배경 클릭 시에만 닫히도록 처리
-      if (e.target === checklistModal || e.target.classList.contains('flex-1')) {
-        closeChecklist();
-      }
-    });
-
     function closeChecklist() {
       checklistModal.classList.add('hidden');
       checklistModal.classList.remove('flex');
       document.body.style.overflow = ''; // 배경 스크롤 복구
+      
+      // 닫을 때 줌인된 상태 초기화 (원래 크기로 복귀)
+      if (checklistSwiperInstance && checklistSwiperInstance.zoom) {
+        checklistSwiperInstance.zoom.out();
+      }
     }
   </script>
 </body>
